@@ -56,6 +56,7 @@ Public Class Pref_Gui
             WinNUT_Params.Arr_Reg_Key.Item("Follow_FSD") = CB_Follow_FSD.Checked
             WinNUT_Params.Arr_Reg_Key.Item("TypeOfStop") = Cbx_TypeStop.SelectedIndex
             WinNUT_Params.Arr_Reg_Key.Item("DelayToShutdown") = CInt(Tb_Delay_Stop.Text)
+            WinNUT_Params.Arr_Reg_Key.Item("CustomAction") = Tb_Custom_Action.Text
             WinNUT_Params.Arr_Reg_Key.Item("AllowExtendedShutdownDelay") = Cb_ExtendTime.Checked
             WinNUT_Params.Arr_Reg_Key.Item("ExtendedShutdownDelay") = CInt(Tb_GraceTime.Text)
             WinNUT_Params.Arr_Reg_Key.Item("VerifyUpdate") = Cb_Verify_Update.Checked
@@ -145,6 +146,7 @@ Public Class Pref_Gui
             CB_Follow_FSD.Checked = WinNUT_Params.Arr_Reg_Key.Item("Follow_FSD")
             Cbx_TypeStop.SelectedIndex = WinNUT_Params.Arr_Reg_Key.Item("TypeOfStop")
             Tb_Delay_Stop.Text = CStr(WinNUT_Params.Arr_Reg_Key.Item("DelayToShutdown"))
+            Tb_Custom_Action.Text = CStr(WinNUT_Params.Arr_Reg_Key.Item("CustomAction"))
             Cb_ExtendTime.Checked = WinNUT_Params.Arr_Reg_Key.Item("AllowExtendedShutdownDelay")
             Tb_GraceTime.Text = CStr(WinNUT_Params.Arr_Reg_Key.Item("ExtendedShutdownDelay"))
             Cb_Verify_Update.Checked = WinNUT_Params.Arr_Reg_Key.Item("VerifyUpdate")
@@ -162,6 +164,11 @@ Public Class Pref_Gui
                 Tb_Delay_Stop.Enabled = False
             Else
                 Tb_Delay_Stop.Enabled = True
+            End If
+            If Cbx_TypeStop.SelectedIndex = 3 Then
+                Tb_Custom_Action.Enabled = True
+            Else
+                Tb_Custom_Action.Enabled = False
             End If
             If Cb_ExtendTime.Checked Then
                 Tb_GraceTime.Enabled = True
@@ -376,4 +383,13 @@ Public Class Pref_Gui
             Me.Btn_Apply.Enabled = True
         End If
     End Sub
+
+    Private Sub Cbx_TypeStop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cbx_TypeStop.SelectedIndexChanged
+        If Cbx_TypeStop.SelectedIndex = 3 Then
+            Tb_Custom_Action.Enabled = True
+        Else
+            Tb_Custom_Action.Enabled = False
+        End If
+    End Sub
+
 End Class

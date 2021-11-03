@@ -281,6 +281,23 @@ Public Class WinNUT
             HasFocus = False
         End If
         'ToastPopup.CreateToastCollection()
+        Custom_Action(WinNUT_Params.Arr_Reg_Key.Item("CustomAction"), False)
+    End Sub
+
+    Private Sub Custom_Action(fileName As String, exec As Boolean)
+        If System.IO.File.Exists(fileName) Then
+            If exec Then
+                Dim Msg As String = "Executing custom action: " + fileName
+                LogFile.LogTracing(Msg, LogLvl.LOG_NOTICE, Me, Msg)
+                Process.Start(fileName)
+            Else
+                Dim Msg As String = "Custom action found: " + fileName
+                LogFile.LogTracing(Msg, LogLvl.LOG_NOTICE, Me, Msg)
+            End If
+        Else
+            Dim Msg As String = "Error cannot find file: " + fileName
+            LogFile.LogTracing(Msg, LogLvl.LOG_ERROR, Me, Msg)
+        End If
     End Sub
 
     Private Sub SystemEvents_PowerModeChanged(ByVal sender As Object, ByVal e As Microsoft.Win32.PowerModeChangedEventArgs)
@@ -983,6 +1000,8 @@ Public Class WinNUT
                 SetSystemPowerState(True, 0)
             Case 2
                 SetSystemPowerState(False, 0)
+            Case 3
+                Custom_Action(WinNUT_Params.Arr_Reg_Key.Item("CustomAction"), True)
         End Select
     End Sub
 
