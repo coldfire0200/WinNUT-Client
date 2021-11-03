@@ -727,9 +727,10 @@ Public Class UPS_Network
                                 ShutdownStatus = True
                             End If
                         Case "FSD"
-                            LogFile.LogTracing("Stop condition imposed by the NUT server", LogLvl.LOG_NOTICE, Me, WinNUT_Globals.StrLog.Item(AppResxStr.STR_LOG_NUT_FSD))
-                            RaiseEvent Shutdown_Condition()
-                            ShutdownStatus = True
+                            If UPS_Follow_FSD Then
+                                LogFile.LogTracing("Stop condition imposed by the NUT server", LogLvl.LOG_NOTICE, Me, WinNUT_Globals.StrLog.Item(AppResxStr.STR_LOG_NUT_FSD))
+                                ShutdownStatus = True
+                            End If
                         Case "LB", "HB"
                             LogFile.LogTracing("High/Low Battery on UPS", LogLvl.LOG_NOTICE, Me)
                         Case "CHRG"
@@ -750,6 +751,9 @@ Public Class UPS_Network
                             LogFile.LogTracing("UPS is boosting incoming voltage", LogLvl.LOG_NOTICE, Me)
                     End Select
                 Next
+                If ShutdownStatus Then
+                    RaiseEvent Shutdown_Condition()
+                End If
                 RaiseEvent DataUpdated()
             End If
         Catch Excep As Exception
